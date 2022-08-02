@@ -42,10 +42,6 @@ jobs:
         with:
           command: build
           args: --release
-      - name: Extract git tag
-        shell: bash
-        run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF#refs/tags/})"
-        id: extract_tag
       - name: Packaging assets
         shell: bash
         run: |
