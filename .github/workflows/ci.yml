@@ -1,4 +1,4 @@
-name: CD
+name: CI
 
 on:
   push:
@@ -11,7 +11,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-#         build_target: [linux, macos, windows]
         build_target: [macos, linux]
         include:
           - build_target: macos
@@ -24,13 +23,6 @@ jobs:
             artifact_suffix: linux-x86_64
             target: x86_64-unknown-linux-musl
             features: ''
-#           - build_target: linux32
-#             os: ubuntu-latest
-#             artifact_suffix: linux-x86_32
-#             target: i686-unknown-linux-musl
-#             features: ''
-#     env:
-#       RUSTFLAGS: -C target-feature=+crt-static
     steps:
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
@@ -41,25 +33,22 @@ jobs:
           profile: minimal
       - name: Install macOS dependencies
         if: matrix.os == 'macos-latest'
-        run: brew install pkg-config
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
-          sudo apt install libncursesw5
       - uses: actions/checkout@v2
-        name: Checkout src
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+#         name: Checkout src
+#       - uses: actions/cache@v2
+#         with:
+#           path: |
+#             ~/.cargo/registry
+#             ~/.cargo/git
+#           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Running cargo build
         uses: actions-rs/cargo@v1
         with:
           command: build
-#           args: --release --target ${{ matrix.target }} ${{ matrix.features }}
           args: --release
       - name: Extract git tag
         shell: bash
@@ -78,11 +67,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: target/release/mdcat-*
-#           files: target/${{ matrix.target }}/release/mdcat-*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-# skipped:
-#           cd ${{ matrix.target }}/
-#           ls -la

@@ -1,5 +1,11 @@
 # mdcat
 
+## About
+
+This is a fork of [`mdcat`](https://codeberg.org/flausch/mdcat/) by [flausch](https://codeberg.org/flausch/) the only aim of which is to produce binaries for Linux and macOS. All the credits go to the original author. The original README follows.
+
+<hr>
+
 Fancy `cat` for Markdown (that is, [CommonMark][]):
 
 ```
