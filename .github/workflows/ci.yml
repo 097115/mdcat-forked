@@ -37,14 +37,8 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
-      - uses: actions/checkout@v2
-#         name: Checkout src
-#       - uses: actions/cache@v2
-#         with:
-#           path: |
-#             ~/.cargo/registry
-#             ~/.cargo/git
-#           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Checkout src
+        uses: actions/checkout@v2
       - name: Running cargo build
         uses: actions-rs/cargo@v1
         with:
